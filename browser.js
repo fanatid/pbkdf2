@@ -48,6 +48,7 @@ function pbkdf2Sync (password, salt, iterations, keylen, digest) {
   if (!Buffer.isBuffer(password)) password = new Buffer(password, 'binary')
   if (!Buffer.isBuffer(salt)) salt = new Buffer(salt, 'binary')
 
+  var destPos = 0
   var hLen
   var l = 1
   var DK = new Buffer(keylen)
@@ -78,9 +79,9 @@ function pbkdf2Sync (password, salt, iterations, keylen, digest) {
       }
     }
 
-    var destPos = (i - 1) * hLen
     var len = (i === l ? r : hLen)
     T.copy(DK, destPos, 0, len)
+    destPos += hLen
   }
 
   return DK
