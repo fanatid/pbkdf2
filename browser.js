@@ -55,7 +55,6 @@ function pbkdf2Sync (password, salt, iterations, keylen, digest) {
   var block1 = new Buffer(salt.length + 4)
   salt.copy(block1, 0, 0, salt.length)
 
-  var r
   var T
 
   for (var i = 1; i <= l; i++) {
@@ -66,7 +65,6 @@ function pbkdf2Sync (password, salt, iterations, keylen, digest) {
       hLen = U.length
       T = new Buffer(hLen)
       l = Math.ceil(keylen / hLen)
-      r = keylen - (l - 1) * hLen
     }
 
     U.copy(T, 0, 0, hLen)
@@ -79,8 +77,7 @@ function pbkdf2Sync (password, salt, iterations, keylen, digest) {
       }
     }
 
-    var len = (i === l ? r : hLen)
-    T.copy(DK, destPos, 0, len)
+    T.copy(DK, destPos, 0, hLen)
     destPos += hLen
   }
 
